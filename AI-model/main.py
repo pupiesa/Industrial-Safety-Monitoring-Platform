@@ -16,7 +16,7 @@ location = ["Site A", "Site B", "Site C", "Site D"]
 
 
 cap = cv2.VideoCapture(cam)
-producer = KafkaProducer(bootstrap_servers='broker1:29092')
+producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
 while True:
     ret, frame = cap.read()
     if not ret:
@@ -57,10 +57,9 @@ while True:
         detections["image"] = base64.b64encode(cv2.imencode('.jpg', frame)[1].tobytes()).decode('utf-8')  # Encode as base64 string
         json_data = json.dumps(detections)
         print(json_data)
-        producer.send('safety_detections', json_data)
+        producer.send('safety_detections', value=json_data.encode('utf-8'))
         # time.sleep(10) # Send data every 10 seconds
-
+        
     cv2.imshow("YOLO Detection", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-
