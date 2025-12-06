@@ -16,7 +16,7 @@ location = ["Site A", "Site B", "Site C", "Site D"]
 
 
 cap = cv2.VideoCapture(cam)
-producer = KafkaProducer(bootstrap_servers='localhost:9092')
+producer = KafkaProducer(bootstrap_servers='broker1:29092')
 while True:
     ret, frame = cap.read()
     if not ret:
